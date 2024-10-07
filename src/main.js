@@ -13,12 +13,11 @@ let numBeans = 0;
 k.loadSprite("background", "sprites/bg-lightning-volcano.jpg");
 k.loadSprite("hijru", "sprites/hijru-300h.png");
 k.loadSprite("bean", "sprites/bean.png");
-k.loadSprite("explosion", "sprites/explode.gif", {
+k.loadSprite("explosion", "sprites/explode.png", {
+  sliceX: 8,
+  sliceY: 1,
   anims: {
-    xplode: {
-      from: 0,
-      to: 8,
-    },
+    xplode: { from: 0, to: 7, loop: false },
   },
 });
 
@@ -57,6 +56,27 @@ loop(0.5, () => {
   }
 });
 
+let touches = 0;
+let touchDirection = 1;
+onTouchStart((p, t) => {
+  if (touches > 0) {
+    return; // ignore more than the first touch for now
+  }
+
+  touches += 1;
+  touchDirection = p.x < hijru.pos.x ? -1 : 1;
+  requestAnimationFrame(touchMove);
+});
+onTouchEnd(() => {
+  touches -= 1;
+});
+function touchMove() {
+  if (touches > 0) {
+    hijru.move(touchDirection * HIJRU_SPEED, 0);
+    requestAnimationFrame(touchMove);
+  }
+}
+
 onKeyDown("left", () => {
   hijru.move(-HIJRU_SPEED, 0);
 });
@@ -74,24 +94,30 @@ hijru.onCollide("bean", (bean) => {
   numBeans -= 1;
 });
 
+const explodeH = 192 / 2;
+const explodeW = explodeH;
 onDestroy("bean", (bean) => {
+  const beanCenter = {
+    x: bean.pos.x + bean.width / 2,
+    y: bean.pos.y + bean.height / 2,
+  };
   const explosion = k.add([
     k.sprite("explosion"),
-    k.pos(bean.pos),
+    k.pos(beanCenter.x - explodeW, beanCenter.y - explodeH),
     timer(),
     "explosion",
   ]);
   explosion.wait(2, () => {
     destroy(explosion);
   });
-  // explosion.play("xplode");
+  explosion.play("xplode");
 });
 
 add([
   rect(width(), 48),
   outline(4),
   area(),
-  pos(0, height() - 48),
+  pos(0, height()),
   // Give objects a body() component if you don't want other solid objects pass through
   body({ isStatic: true }),
 ]);

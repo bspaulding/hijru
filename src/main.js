@@ -1,4 +1,4 @@
-import kaboom from "kaboom";
+import kaboom from "kaplay";
 
 const k = kaboom();
 

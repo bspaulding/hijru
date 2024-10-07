@@ -5,10 +5,8 @@
 		"dev": "esbuild --bundle src/main.js --outfile=www/main.js --servedir=www",
 		"bundle": "npm run build && mkdir -p dist && zip -r dist/game.zip www -x \"**/.DS_Store\""
 	},
-	"dependencies": {
-		"kaboom": "^3000.1.17"
-	},
 	"devDependencies": {
-		"esbuild": "^0.20.1"
+		"esbuild": "^0.20.1",
+		"kaplay": "^3001.0.0-beta.3"
 	}
 }

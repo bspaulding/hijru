@@ -41,17 +41,29 @@ const bg = k.add([
 
 const fireButton = k.add([
   k.pos(k.width() - 72, k.center().y),
+  k.area(),
   k.circle(48),
   k.color(255,255,255),
   k.fixed(),
-  k.anchor("center")
+  k.anchor("center"),
+  "fireButton"
 ]);
 
 fireButton.add([k.text("🔥"), k.color("FFA500"), k.pos(-18, -20)]);
 
-fireButton.onMousePress(() => {
+onClick("fireButton", () => {
   hijru.trigger("fireBreath");
 });
+
+const navPad = k.add([
+  k.pos(72, k.center().y),
+  k.area(),
+  k.circle(48),
+  k.color(255,255,255),
+  k.fixed(),
+  k.anchor("center"),
+  "navPad"
+]);
 
 const hijru = k.add([
   k.pos(k.center()),

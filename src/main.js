@@ -39,6 +39,20 @@ const bg = k.add([
   k.scale(1),
 ]);
 
+const fireButton = k.add([
+  k.pos(k.width() - 72, k.center().y),
+  k.circle(48),
+  k.color(255,255,255),
+  k.fixed(),
+  k.anchor("center")
+]);
+
+fireButton.add([k.text("🔥"), k.color("FFA500"), k.pos(-18, -20)]);
+
+fireButton.onMousePress(() => {
+  hijru.trigger("fireBreath");
+});
+
 const hijru = k.add([
   k.pos(k.center()),
   k.anchor("center"),
@@ -59,6 +73,7 @@ loop(0.5, () => {
         k.body(),
         k.area(),
         k.pos(k.rand(k.vec2(50), k.vec2(k.width() - 50, k.height() - 50))),
+        k.offscreen({ destroy: true }),
         "bean",
       ]);
       numBeans += 1;

@@ -1,6 +1,13 @@
 import kaboom from "kaplay";
 
-const k = kaboom();
+const k = kaboom({
+  buttons: {
+    left: { keyboard: ["left"] },
+    right: { keyboard: ["right"] },
+    jump: { keyboard: ["up"] },
+    fireBreath: { keyboard: ["space"] },
+  },
+});
 
 k.loadSound("you-lose", "sounds/you-lose.mp3");
 
@@ -43,10 +50,10 @@ const fireButton = k.add([
   k.pos(k.width() - 72, k.center().y),
   k.area(),
   k.circle(48),
-  k.color(255,255,255),
+  k.color(255, 255, 255),
   k.fixed(),
   k.anchor("center"),
-  "fireButton"
+  "fireButton",
 ]);
 
 fireButton.add([k.text("🔥"), k.color("FFA500"), k.pos(-18, -20)]);
@@ -55,15 +62,37 @@ onClick("fireButton", () => {
   hijru.trigger("fireBreath");
 });
 
-const navPad = k.add([
-  k.pos(72, k.center().y),
+const leftPad = k.add([
+  k.pos(54, k.center().y),
   k.area(),
-  k.circle(48),
-  k.color(255,255,255),
+  k.circle(36),
+  k.color(255, 255, 255),
   k.fixed(),
   k.anchor("center"),
-  "navPad"
+  "leftPad",
 ]);
+
+leftPad.add([k.text("👈", { size: 48 }), k.anchor("center")]);
+
+const rightPad = k.add([
+  k.pos(54 + 72 + 18, k.center().y),
+  k.area(),
+  k.circle(36),
+  k.color(255, 255, 255),
+  k.fixed(),
+  k.anchor("center"),
+  "rightPad",
+]);
+
+rightPad.add([k.text("👉", { size: 48 }), k.anchor("center")]);
+
+onMouseDown("left", () => {
+  pressButton(mousePos().x < 100 ? "left" : "right");
+});
+
+onMouseRelease("left", () => {
+  releaseButton(mousePos().x < 100 ? "left" : "right");
+});
 
 const hijru = k.add([
   k.pos(k.center()),
@@ -73,7 +102,7 @@ const hijru = k.add([
   k.doubleJump(),
   k.rotate(0),
   k.sprite("hijru"),
-  k.health(500)
+  k.health(500),
 ]);
 
 loop(0.5, () => {
@@ -114,34 +143,28 @@ function touchMove() {
   }
 }
 
-onKeyDown("left", () => {
+onButtonDown("left", () => {
   hijru.flipX = true;
   hijru.move(-HIJRU_SPEED, 0);
 });
 
-onKeyDown("right", () => {
+onButtonDown("right", () => {
+  console.debug("onButtonDown right");
   hijru.flipX = false;
   hijru.move(HIJRU_SPEED, 0);
 });
 
-onKeyPress("up", () => {
+onButtonPress("jump", () => {
   hijru.doubleJump();
 });
 
-onKeyPress("space", () => {
+onButtonPress("fireBreath", () => {
   hijru.trigger("fireBreath");
 });
 
-const hp = k.add([
-  text("500/500 HP"),
-  pos(0, 0),
-]);
+const hp = k.add([text("500/500 HP"), pos(0, 0)]);
 
-const score = k.add([
-  text("0 beans"),
-  pos(0, 50),
-  { value: 0 }
-]);
+const score = k.add([text("0 beans"), pos(0, 50), { value: 0 }]);
 
 hijru.onCollide("bean", (bean) => {
   hijru.hurt(10);
@@ -164,7 +187,8 @@ function centerOf(obj) {
 
 hijru.on("fireBreath", () => {
   const direction = hijru.flipX ? -1 : 1;
-  const offset = direction == 1 ? { x: 275 * direction, y: -140 } : { x: -275, y: 40};
+  const offset =
+    direction == 1 ? { x: 275 * direction, y: -140 } : { x: -275, y: 40 };
   const fire = k.add([
     k.sprite("hijruBreath"),
     k.pos(hijru.pos.x + offset.x, hijru.pos.y + offset.y),
@@ -172,7 +196,7 @@ hijru.on("fireBreath", () => {
     k.area(),
     k.body({ isStatic: true }),
     timer(),
-    "hijruBreath"
+    "hijruBreath",
   ]);
   fire.flipX = hijru.flipX;
   fire.onCollide("bean", (bean) => {
@@ -217,14 +241,8 @@ add([
 scene("lose", (score) => {
   console.debug({ score });
   const center = k.center();
-  add([
-    text("You Lose!"),
-    k.pos(center),
-  ])
-  add([
-    text(`You ate ${score} beans.`),
-    k.pos(center.x, center.y + 50),
-  ])
-  play("you-lose")
+  add([text("You Lose!"), k.pos(center)]);
+  add([text(`You ate ${score} beans.`), k.pos(center.x, center.y + 50)]);
+  play("you-lose");
   // TODO: losing music
 });

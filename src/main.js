@@ -59,7 +59,23 @@ const fireButton = k.add([
 fireButton.add([k.text("🔥"), k.color("FFA500"), k.pos(-18, -20)]);
 
 onClick("fireButton", () => {
-  hijru.trigger("fireBreath");
+  pressButton("fireBreath");
+});
+
+const jumpButton = k.add([
+  k.pos(k.width() - 184, k.center().y),
+  k.area(),
+  k.circle(48),
+  k.color(255, 255, 255),
+  k.fixed(),
+  k.anchor("center"),
+  "jumpButton",
+]);
+
+jumpButton.add([k.text("🦘", { size: 48 }), k.pos(-20, -28)]);
+
+onClick("jumpButton", () => {
+  pressButton("jump");
 });
 
 const leftPad = k.add([

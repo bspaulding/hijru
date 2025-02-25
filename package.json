@@ -7,6 +7,7 @@
 	},
 	"devDependencies": {
 		"esbuild": "^0.20.1",
-		"kaplay": "^3001.0.9"
+		"kaplay": "^3001.0.9",
+		"prettier": "^3.5.2"
 	}
 }

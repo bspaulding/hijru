@@ -2,10 +2,22 @@ import kaboom from "kaplay";
 
 const k = kaboom({
   buttons: {
-    left: { keyboard: ["left"] },
-    right: { keyboard: ["right"] },
-    jump: { keyboard: ["up"] },
-    fireBreath: { keyboard: ["space"] },
+    left: {
+      keyboard: ["left"],
+      gamepad: ["dpad-left"],
+    },
+    right: {
+      keyboard: ["right"],
+      gamepad: ["dpad-right"],
+    },
+    jump: {
+      keyboard: ["up"],
+      gamepad: ["north"],
+    },
+    fireBreath: {
+      keyboard: ["space"],
+      gamepad: ["south"],
+    },
   },
 });
 

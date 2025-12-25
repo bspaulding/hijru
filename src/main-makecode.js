@@ -8,6 +8,9 @@
 const HIJRU_SPEED = 100;
 const JUMP_FORCE = 200;
 const NUM_BEANS_PER_WAVE = 5;
+const MAX_HP = 500;
+const GROUND_WIDTH = 20;
+const GROUND_Y = 14;
 let wave = 0;
 let numBeans = 0;
 let score = 0;
@@ -38,7 +41,7 @@ hijru.ay = 400; // gravity
 hijru.setFlag(SpriteFlag.StayInScreen, true);
 
 // Health system
-let hp = 500;
+let hp = MAX_HP;
 
 // Create UI elements
 let hpText = textsprite.create("");
@@ -53,7 +56,7 @@ updateScoreDisplay();
 
 // Update display functions
 function updateHPDisplay() {
-    hpText.setText(hp + "/500 HP");
+    hpText.setText(hp + "/" + MAX_HP + " HP");
 }
 
 function updateScoreDisplay() {
@@ -199,14 +202,14 @@ function gameOver() {
     sprites.destroyAllSpritesOfKind(SpriteKind.Projectile);
     
     // Show game over screen
-    game.splash("You Lose!", `You ate ${score} beans`);
+    game.splash("You Lose!", `You ate ${score} beans.`);
     
     // Reset game
     resetGame();
 }
 
 function resetGame() {
-    hp = 500;
+    hp = MAX_HP;
     score = 0;
     wave = 0;
     numBeans = 0;
@@ -224,7 +227,7 @@ function resetGame() {
 scene.setBackgroundColor(9);
 
 // Simple platform at the bottom
-for (let i = 0; i < 20; i++) {
-    tiles.setTileAt(tiles.getTileLocation(i, 14), sprites.dungeon.floorDark0);
-    tiles.setWallAt(tiles.getTileLocation(i, 14), true);
+for (let i = 0; i < GROUND_WIDTH; i++) {
+    tiles.setTileAt(tiles.getTileLocation(i, GROUND_Y), sprites.dungeon.floorDark0);
+    tiles.setWallAt(tiles.getTileLocation(i, GROUND_Y), true);
 }

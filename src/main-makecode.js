@@ -2,6 +2,9 @@
 // This is a port of the Kaplay/Kaboom game to MakeCode Arcade JavaScript APIs
 
 // Game constants
+// Note: MakeCode Arcade uses different physics scaling than Kaplay
+// Original Kaplay values: HIJRU_SPEED=200, JUMP_FORCE=1200, gravity=1600
+// These values are adjusted for MakeCode's smaller screen and different physics engine
 const HIJRU_SPEED = 100;
 const JUMP_FORCE = 200;
 const NUM_BEANS_PER_WAVE = 5;
@@ -90,7 +93,7 @@ controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
 
 // Bean spawning system
 game.onUpdateInterval(500, function () {
-    if (numBeans == 0 && gameRunning) {
+    if (numBeans === 0 && gameRunning) {
         wave += 1;
         for (let i = 0; i < wave * NUM_BEANS_PER_WAVE; i++) {
             spawnBean();
@@ -196,7 +199,7 @@ function gameOver() {
     sprites.destroyAllSpritesOfKind(SpriteKind.Projectile);
     
     // Show game over screen
-    game.splash("You Lose!", "You ate " + score + " beans");
+    game.splash("You Lose!", `You ate ${score} beans`);
     
     // Reset game
     resetGame();
@@ -218,7 +221,6 @@ function resetGame() {
 }
 
 // Create ground
-tiles.setTilemap(tilemap`level1`);
 scene.setBackgroundColor(9);
 
 // Simple platform at the bottom

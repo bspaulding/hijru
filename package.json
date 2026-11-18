@@ -6,7 +6,7 @@
 		"bundle": "npm run build && mkdir -p dist && zip -r dist/game.zip www -x \"**/.DS_Store\""
 	},
 	"devDependencies": {
-		"esbuild": "^0.20.1",
+		"esbuild": "^0.28.1",
 		"kaplay": "^3001.0.9",
 		"prettier": "^3.5.2"
 	}
